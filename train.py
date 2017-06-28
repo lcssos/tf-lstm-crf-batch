@@ -14,6 +14,8 @@ from loader import prepare_dataset, prepare_dataset_
 from model import Model
 import tensorflow as tf
 
+
+
 # Read parameters from command line
 optparser = optparse.OptionParser()
 optparser.add_option(
@@ -122,7 +124,7 @@ parameters['lr_method'] = opts.lr_method
 parameters['lr_rate'] = opts.lr_rate
 parameters['clip_norm'] = opts.clip_norm
 parameters['is_train'] = opts.mode
-parameters['update'] = opts.update_scheme
+# parameters['update'] = opts.update_scheme
 parameters['batch_size'] = opts.batch_size
 
 # Check parameters validity
