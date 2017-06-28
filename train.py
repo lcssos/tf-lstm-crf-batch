@@ -312,6 +312,7 @@ with tf.Session(config=config) as sess:
                 if test_score > best_test:
                     best_test = test_score
                     print "New best score on test."
+                print "-"*30
             train_data_count += batch_size
         assert token_count != 0.0
         token_accus_epoch = np.sum(epoch_accus) / token_count
