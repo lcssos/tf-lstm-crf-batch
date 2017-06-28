@@ -13,9 +13,9 @@ from loader import word_mapping, char_mapping, tag_mapping
 from loader import prepare_dataset, prepare_dataset_
 from model import Model
 import tensorflow as tf
-
-
-
+eval_path = "./evaluation"
+eval_temp = os.path.join(eval_path, "temp")
+eval_script = os.path.join(eval_path, "conlleval")
 # Read parameters from command line
 optparser = optparse.OptionParser()
 optparser.add_option(
@@ -39,15 +39,15 @@ optparser.add_option(
     type='int', help="Replace digits with 0"
 )
 optparser.add_option(
-    "-c", "--char_dim", default="25",
+    "-c", "--char_dim", default="0",
     type='int', help="Char embedding dimension"
 )
 optparser.add_option(
-    "-C", "--char_lstm_dim", default="25",
+    "-C", "--char_lstm_dim", default="0",
     type='int', help="Char LSTM hidden layer size"
 )
 optparser.add_option(
-    "-b", "--char_bidirect", default="1",
+    "-b", "--char_bidirect", default="0",
     type='int', help="Use a bidirectional LSTM for chars"
 )
 optparser.add_option(
@@ -67,7 +67,7 @@ optparser.add_option(
     type='int', help="Use CRF (0 to disable)"
 )
 optparser.add_option(
-    "-D", "--dropout", default="0",
+    "-D", "--dropout", default="0.5",
     type='float', help="Droupout on the input (0 = no dropout)"
 )
 optparser.add_option(
@@ -79,7 +79,7 @@ optparser.add_option(
     type='float', help="learning rate"
 )
 optparser.add_option(
-    "-p", "--clip_norm", default="0",
+    "-p", "--clip_norm", default="5.0",
     type='float', help="The clipping ratio"
 )
 optparser.add_option(
@@ -87,7 +87,7 @@ optparser.add_option(
     type='int', help="1 for Train and 0 for Test"
 )
 optparser.add_option(
-    "-G", "--batch_size", default="20",
+    "-G", "--batch_size", default="1",
     type='int', help="batch size"
 )
 optparser.add_option(
@@ -95,11 +95,11 @@ optparser.add_option(
     type='float', help=" whether it needs to replace singletons by the unknown word or not"
 )
 optparser.add_option(
-    "-E", "--epoch", default="50",
+    "-E", "--epoch", default="100",
     type='int', help="number of epochs over the training set"
 )
 optparser.add_option(
-    "-F", "--freq", default="5000",
+    "-F", "--freq", default="1000", # 1==1000
     type='int', help="evaluate on dev every freq_eval steps"
 )
 optparser.add_option(
@@ -124,7 +124,7 @@ parameters['lr_method'] = opts.lr_method
 parameters['lr_rate'] = opts.lr_rate
 parameters['clip_norm'] = opts.clip_norm
 parameters['is_train'] = opts.mode
-# parameters['update'] = opts.update_scheme
+#parameters['update'] = opts.update_scheme
 parameters['batch_size'] = opts.batch_size
 
 # Check parameters validity
